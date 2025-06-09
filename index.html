@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobBoard - Find Your Next Opportunity</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo-icon">💼</div>
+                <h1 class="logo">JobBoard</h1>
+            </div>
+            <nav class="nav">
+                <div class="stats-container">
+                    <span id="totalJobs" class="stats-badge">0 Jobs Available</span>
+                </div>
+                <button id="addJobBtn" class="btn btn-primary">
+                    <span class="btn-icon">+</span>
+                    Post a Job
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2 class="hero-title">Find Your Dream Job</h2>
+                    <p class="hero-subtitle">Discover thousands of job opportunities from top companies worldwide</p>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="heroJobCount">0</span>
+                        <span class="stat-label">Active Jobs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="heroCompanyCount">0</span>
+                        <span class="stat-label">Companies</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="heroCategoryCount">0</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search and Filter Section -->
+            <section class="search-section">
+                <div class="search-header">
+                    <h3>Search & Filter Jobs</h3>
+                    <button id="advancedToggle" class="toggle-btn">Advanced Filters</button>
+                </div>
+                <div class="search-container">
+                    <div class="search-input-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Search jobs by title, company, or keyword..." class="search-input">
+                        <button id="searchBtn" class="btn btn-secondary">Search</button>
+                    </div>
+                </div>
+                <div class="filter-container">
+                    <div class="filter-group">
+                        <label for="categoryFilter">Category</label>
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="">All Categories</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Design">Design</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Education">Education</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Customer Service">Customer Service</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="filter-group" id="advancedFilters" style="display: none;">
+                        <label for="locationFilter">Location</label>
+                        <select id="locationFilter" class="filter-select">
+                            <option value="">All Locations</option>
+                            <option value="Remote">Remote</option>
+                            <option value="New York">New York</option>
+                            <option value="San Francisco">San Francisco</option>
+                            <option value="Los Angeles">Los Angeles</option>
+                            <option value="Chicago">Chicago</option>
+                            <option value="Boston">Boston</option>
+                            <option value="Austin">Austin</option>
+                            <option value="Seattle">Seattle</option>
+                        </select>
+                    </div>
+                    <div class="filter-actions">
+                        <button id="clearFilters" class="btn btn-outline">Clear All</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Job Listings -->
+            <section class="jobs-section">
+                <div class="jobs-header">
+                    <div class="jobs-title-container">
+                        <h2>Available Positions</h2>
+                        <span id="jobCount" class="job-count">0 jobs found</span>
+                    </div>
+                    <div class="jobs-controls">
+                        <select id="sortSelect" class="sort-select">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="company">Company A-Z</option>
+                            <option value="title">Title A-Z</option>
+                        </select>
+                        <div class="view-toggle">
+                            <button id="gridView" class="view-btn active" title="Grid View">⊞</button>
+                            <button id="listView" class="view-btn" title="List View">☰</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="jobsList" class="jobs-grid">
+                    <!-- Jobs will be dynamically inserted here -->
+                </div>
+                <div id="noJobsMessage" class="no-jobs" style="display: none;">
+                    <div class="no-jobs-icon">🔍</div>
+                    <h3>No jobs found</h3>
+                    <p>Try adjusting your search criteria or filters</p>
+                </div>
+                <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Loading jobs...</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Add Job Modal -->
+    <div id="addJobModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title-container">
+                    <span class="modal-icon">💼</span>
+                    <h3>Post a New Job</h3>
+                </div>
+                <button id="closeAddJobModal" class="close-btn">&times;</button>
+            </div>
+            <form id="addJobForm" class="job-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title *</label>
+                        <input type="text" id="jobTitle" required placeholder="e.g. Senior Software Engineer">
+                    </div>
+                    <div class="form-group">
+                        <label for="companyName">Company Name *</label>
+                        <input type="text" id="companyName" required placeholder="e.g. TechCorp Inc.">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jobLocation">Location *</label>
+                        <input type="text" id="jobLocation" required placeholder="e.g. San Francisco, CA or Remote">
+                    </div>
+                    <div class="form-group">
+                        <label for="jobCategory">Category *</label>
+                        <select id="jobCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Design">Design</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Education">Education</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Customer Service">Customer Service</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jobType">Job Type</label>
+                        <select id="jobType">
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Internship">Internship</option>
+                            <option value="Freelance">Freelance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="salaryRange">Salary Range</label>
+                        <input type="text" id="salaryRange" placeholder="e.g. $80,000 - $120,000">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="jobDescription">Job Description *</label>
+                    <textarea id="jobDescription" rows="6" required placeholder="Describe the role, responsibilities, requirements, and benefits..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Contact Email *</label>
+                    <input type="email" id="contactEmail" required placeholder="careers@company.com">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelAddJob" class="btn btn-outline">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-icon">✓</span>
+                        Post Job
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Job Details Modal -->
+    <div id="jobDetailsModal" class="modal">
+        <div class="modal-content job-details-modal">
+            <div class="modal-header">
+                <div class="modal-title-container">
+                    <h3 id="modalJobTitle">Job Title</h3>
+                    <div class="job-badges">
+                        <span id="modalJobType" class="job-type-badge">Full-time</span>
+                        <span id="modalDatePosted" class="date-badge">Posted today</span>
+                    </div>
+                </div>
+                <button id="closeJobDetailsModal" class="close-btn">&times;</button>
+            </div>
+            <div class="job-details">
+                <div class="job-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🏢</span>
+                        <span id="modalCompany" class="company"></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">📍</span>
+                        <span id="modalLocation" class="location"></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🏷️</span>
+                        <span id="modalCategory" class="category"></span>
+                    </div>
+                    <div class="meta-item" id="modalSalaryContainer" style="display: none;">
+                        <span class="meta-icon">💰</span>
+                        <span id="modalSalary" class="salary"></span>
+                    </div>
+                </div>
+                <div class="job-description">
+                    <h4>Job Description</h4>
+                    <div id="modalDescription"></div>
+                </div>
+                <div class="job-contact">
+                    <h4>Apply Now</h4>
+                    <div class="contact-info">
+                        <p>Send your application to: <a id="modalEmail" href="" class="email-link"></a></p>
+                        <button class="btn btn-primary apply-btn">
+                            <span class="btn-icon">📧</span>
+                            Apply via Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ADD THE FOOTER CODE HERE -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <div class="logo-icon">💼</div>
+                    <span class="logo-text">JobBoard</span>
+                </div>
+                <p class="footer-description">Find your dream job with ease</p>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p class="footer-email">
+                    <span class="email-icon">📧</span>
+                    <a href="mailto:ashishrahin@gmail.com">ashishrahin@gmail.com</a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                <p>&copy; 2025 JobBoard. All rights reserved.</p>
+                <p class="footer-built">Built with ❤️ by Ashish shakya</p>
+            </div>
+            <div class="footer-year">
+                <span class="year-badge">Est. 2025</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
