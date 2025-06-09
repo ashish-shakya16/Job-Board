@@ -36,4 +36,4 @@ JobBoard is a modern, responsive web application designed to help users find job
 
 ---
 
-## 📂 File Structure
+
