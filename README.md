@@ -4,6 +4,12 @@ JobBoard is a modern, responsive web application designed to help users find job
 
 ---
 
+## 🌐 Live Demo
+
+👉 [View Deployed Project on Netlify](https://tech-job-board.netlify.app/)
+
+---
+
 ## 🚀 Features
 
 - 🔍 **Search & Filter Jobs** by keyword, category, or location
@@ -24,6 +30,10 @@ JobBoard is a modern, responsive web application designed to help users find job
 - **localStorage** for persistent job data
 
 ---
+
+## 📂 File Structure
+
+
 
 ## 📸 Screenshots
 ![Screenshot 2025-06-09 125540](https://github.com/user-attachments/assets/eb4665ff-0626-47f5-92b1-487aadffd296)
